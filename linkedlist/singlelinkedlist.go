@@ -92,6 +92,27 @@ func (this *LinkedList) FindByValue(v interface{}) *LinkedNode {
 }
 
 func (this *LinkedList) Revert() {
+	if this.head.next == nil {
+		return
+	}
+	node := this.RevertByNode(this.head.next)
+	this.head.next = node
+
+}
+
+func (this *LinkedList) RevertByNode(head *LinkedNode) *LinkedNode {
+	var pre *LinkedNode = nil
+	var next *LinkedNode = nil
+	for head != nil {
+		next = head.next
+		head.next = pre
+		pre = head
+		head = next
+	}
+	return pre
+}
+
+func (this *LinkedList) RevertSlow() {
 	var pre *LinkedNode = nil
 	var cur *LinkedNode = this.head.next
 	var next *LinkedNode = this.head.next.next
@@ -122,25 +143,71 @@ func (this *LinkedList) FindByIndex(index uint) *LinkedNode {
 	return cur
 }
 
+func (this *LinkedList) GetMidNode() (uint, *LinkedNode) {
+	var i uint = 0
+	var fast *LinkedNode = this.head.next
+	var slow *LinkedNode = this.head.next
+	for fast != nil {
+		if fast.next != nil {
+			fast = fast.next.next
+			i++
+		} else {
+			break
+		}
+		slow = slow.next
+	}
+	return i, slow
+}
+
+func (this *LinkedList) IsPalindrome() bool {
+	_, midNode := this.GetMidNode()
+	var pre *LinkedNode = nil
+	var next *LinkedNode = nil
+	var head = this.head.next
+	for head != midNode {
+		next = head.next
+		head.next = pre
+		pre = head
+		head = next
+	}
+	this.head.next = pre
+	var isPalindrome bool = true
+	var left *LinkedNode = pre
+	var right *LinkedNode
+	if this.length%2 != 0 {
+		right = midNode.GetNext()
+	} else {
+		right = midNode
+	}
+	for nil != left && nil != right {
+		if left.GetValue() != right.GetValue() {
+			isPalindrome = false
+			break
+		}
+		left = left.GetNext()
+		right = right.GetNext()
+	}
+	head = pre
+	pre = midNode
+	for head != nil {
+		next = head.next
+		head.next = pre
+		pre = head
+		head = next
+	}
+	this.head.next = pre
+	return isPalindrome
+}
+
 func (this *LinkedList) PrintLinkedList() {
 	cur := this.head.next
 	fmt.Println(fmt.Sprintf("linkedlist length %d", this.GetLength()))
 	for nil != cur {
-		fmt.Println(fmt.Sprintf("ndoe:%d", cur.value))
+		PrintNode(cur)
 		cur = cur.next
 	}
 }
 
-func main() {
-	testLinkedList := NewLinkedList()
-	testLinkedList.InsertToHead(0)
-	testLinkedList.PrintLinkedList()
-	testLinkedList.InsertToTail(1)
-	testLinkedList.PrintLinkedList()
-	testLinkedList.InsertToTail(2)
-	testLinkedList.PrintLinkedList()
-	testLinkedList.Revert()
-	testLinkedList.PrintLinkedList()
-	testLinkedList.DeleteNodeByValue(1)
-	testLinkedList.PrintLinkedList()
+func PrintNode(node *LinkedNode) {
+	fmt.Println(fmt.Sprintf("node:%d", node.value))
 }
