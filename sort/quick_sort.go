@@ -8,12 +8,12 @@ func sperateSort(l []int, start, end int) {
 	if start >= end {
 		return
 	}
-	i := partiton(l, start, end)
+	i := partition(l, start, end)
 	sperateSort(l, start, i-1)
 	sperateSort(l, i+1, end)
 }
 
-func partiton(l []int, start, end int) int {
+func partition(l []int, start, end int) int {
 	pointValue := l[end]
 	var i = start
 	for j := start; j < end; j++ {
