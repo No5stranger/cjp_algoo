@@ -19,6 +19,39 @@ func (node *Node) Print() {
 	}
 }
 
+func LinkedListPlus(a, b int) *Node {
+	al := Int2LinkedNode(a)
+	bl := Int2LinkedNode(b)
+	s := revertLinkedList(linkedListPlus(revertLinkedList(al), revertLinkedList(bl)))
+	s.Print()
+	return s
+}
+
+func Int2LinkedNode(n int) *Node {
+	// covert int to linkedNode
+	// e.g: 1123   1 -> 1 -> 2 -> 3
+	var l []int
+	var ll int
+	for n > 0 {
+		l = append(l, n%10)
+		n = n / 10
+		ll++
+	}
+	var head *Node = nil
+	var pre *Node = nil
+	for i := 0; i < ll; i++ {
+		n := NewNode(l[i])
+		if head == nil {
+			head = n
+		}
+		if pre != nil {
+			pre.next = n
+		}
+		pre = n
+	}
+	return revertLinkedList(head)
+}
+
 func NodePlus() {
 	one := NewNode(1)
 	two := NewNode(2)
