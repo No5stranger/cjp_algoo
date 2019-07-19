@@ -26,6 +26,16 @@ func (bt *BinaryTree) InOrderTraverse() {
 	}
 }
 
+func RecursiveInOrderTraverse(node *Node) {
+	// use recursive to traverse tree in order
+	if node == nil {
+		return
+	}
+	RecursiveInOrderTraverse(node.left)
+	fmt.Println(node.data)
+	RecursiveInOrderTraverse(node.right)
+}
+
 func (bt *BinaryTree) PreOrderTraverse() {
 	var t *Node
 	p := bt.root
