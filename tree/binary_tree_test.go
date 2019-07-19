@@ -29,3 +29,8 @@ func TestBinaryTree_PostOrderWithTwoStack(t *testing.T) {
 	bt := makeBinaryTree()
 	bt.PostOrderTraverseWithTwoStack()
 }
+
+func TestRecursiveInOrderTraverse(t *testing.T) {
+	bt := makeBinaryTree()
+	RecursiveInOrderTraverse(bt.root)
+}
